@@ -5,5 +5,5 @@
 	"homepage": "http://github.com/wufe/x-downloader",
 	"repository": "git://github.com/wufe/x-downloader.git",
 	"author": "Simone <wufe92@gmail.com> ( http://www.wufe.it )",
-	"main": "./index.html"
+	"main": "./index.js"
 }
