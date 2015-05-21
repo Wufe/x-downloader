@@ -5,5 +5,21 @@
 	"homepage": "http://github.com/wufe/x-downloader",
 	"repository": "git://github.com/wufe/x-downloader.git",
 	"author": "Simone <wufe92@gmail.com> ( http://www.wufe.it )",
-	"main": "./index.js"
+	"contributors": {
+		"giuseppe": {
+			"name": "Giuseppe Pagano",
+			"email": "giuseppe.pagano.p@gmail.com",
+			"url": "giuseppepagano.tk"
+		}
+	},
+	"main": "./index.js",
+	"devDependencies": {
+		"mocha" : "*",
+		"istanbul" : "*",
+		"mocha-istanbul" : "*",
+		"should": ">= 0.0.1"
+	},
+	"scripts": {
+		"test": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
+	}
 }
