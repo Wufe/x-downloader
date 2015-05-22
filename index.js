@@ -51,15 +51,16 @@ if(!args["interactive"]){
 	url = args["url"]
 	if(url == null){
 		console.log("No url is given, exiting")
+    process.exit()
 	}else{
 		if(!re.test(url)){
 			console.log("Malformed url, exiting")
 			process.exit()
 		}
 		if(args["output"] == null){
-			downloader.download(url)
+			downloader.download(url, undefined, false, process.exit)
 		}else{
-			downloader.download(url, args["output"])
+			downloader.download(url, args["output"], false, process.exit)
 		}
 	}
 }else{
@@ -73,9 +74,9 @@ if(!args["interactive"]){
 
 		rl.question("Insert output name (leave blank to keep original filename): ", function(output){
   			if(output == ""){
-				downloader.download(url)
+				downloader.download(url, undefined, false, process.exit)
   			}else{
-  				downloader.download(url, output)
+  				downloader.download(url, output, false, process.exit)
   			}
   			rl.close()
   		})
