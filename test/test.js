@@ -1,6 +1,7 @@
 var assert = require("assert")
 var should = require('should');
 var fs = require('fs');
+var url = require("url")
 var Downloader = require("../lib/downloader.class.js")
 
 var oldLog = console.log
@@ -102,12 +103,15 @@ describe('XDOWNLOADER', function(){
 			_done()
 		}
 
+		var httpsuri = "https://www.google.it/images/srpr/"
+		var httpsname = "logo11w.png"
+		var uri = "http://www.xdccfinder.it/"
 		var filename = "2014-06-15_00003.jpg"
 		var altname = "r.jpg"
 
 		it("downloads file without name", function(done){
 			_done = done
-			obj.download( "http://www.xdccfinder.it/"+filename, undefined, true, func);
+			obj.download( uri+filename, undefined, true, func);
 		})
 
 		it("default filename exists", function(){
@@ -116,16 +120,61 @@ describe('XDOWNLOADER', function(){
 		
 		it("downloads file with name", function(done){
 			_done = done
-			obj.download( "http://www.xdccfinder.it/"+filename, altname, true, func);
+			obj.download( uri+filename, altname, true, func);
 		})
 
 		it("filename exsists", function(){
 			fs.existsSync(altname).should.equal(true)
 		})
 
+		it("downloads file over https", function(done){
+			_done = done
+			obj.download( httpsuri+httpsname, undefined, true, func);
+		})
+
+		it("filename over https exsists", function(){
+			fs.existsSync(httpsname).should.equal(true)
+		})
+
 		after(function(){
-    		//fs.unlinkSync(filename)
+    		fs.unlinkSync(filename)
     		fs.unlinkSync(altname)
+    		fs.unlinkSync(httpsname)
+  		})
+	})
+
+	describe("Chunk class", function(){
+		var uri = "http://www.xdccfinder.it/"
+		var filename = "2014-06-15_00003.jpg"
+		var _tdata = undefined
+		var chunk = undefined
+
+		it("can instantiate", function(done){
+			fs.open( './' + filename, 'w', undefined, function( err, fd ){
+				_tdata = {
+			        index: 0,
+			        start: 0,
+			        end: 255,
+			        stack: new Buffer( 0 ),
+			        written: 0,
+			        content_length: 1024,
+			        filename: "test",
+			        URI: url.parse(uri+filename),
+			        chunk_size: 255,
+			        file_descriptor: fd,
+			        onEndCallback: undefined
+			    }
+			    chunk = obj.chunkToTest(_tdata)
+			    done()
+			})
+		})
+
+		it("Exists", function(){
+			should.exist(chunk)
+		})
+
+		after(function(){
+    		fs.unlinkSync(filename)
   		})
 	})
 })
